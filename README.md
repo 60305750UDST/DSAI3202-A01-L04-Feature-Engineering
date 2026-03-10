@@ -159,7 +159,7 @@ az ml job stream --name <job_name>
 
 ## Successful Pipeline Run
 
-![Completed Pipeline](screenshots/successful_pipeline.png)
+![Completed Pipeline](successful_pipeline.png)
 
 | Job Name                    | Status          |
 |-----------------------------|-----------------|
