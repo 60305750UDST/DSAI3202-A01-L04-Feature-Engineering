@@ -1,0 +1,25 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: sbert_embeddings
+display_name: SBERT Embeddings
+version: 1
+type: command
+inputs:
+  data:
+    type: uri_folder
+  model_name:
+    type: string
+    default: "all-MiniLM-L6-v2"
+  batch_size:
+    type: integer
+    default: 64
+outputs:
+  out:
+    type: uri_folder
+code: .
+command: >-
+  python sbert.py
+  --data ${{inputs.data}}
+  --out ${{outputs.out}}
+  --model_name ${{inputs.model_name}}
+  --batch_size ${{inputs.batch_size}}
+environment: azureml:sbert-env@latest

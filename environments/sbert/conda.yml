@@ -1,0 +1,15 @@
+name: sbert-env
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.8
+  - pip
+  - pip:
+      - torch==2.0.1
+      - sentence-transformers==2.7.0
+      - transformers==4.40.0
+      - pandas==1.5.3
+      - pyarrow==12.0.1
+      - numpy==1.24.4
+      - huggingface-hub==0.23.4

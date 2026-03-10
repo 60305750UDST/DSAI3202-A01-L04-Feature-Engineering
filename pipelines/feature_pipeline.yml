@@ -1,0 +1,65 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: Lab4 Feature Engineering Pipeline
+compute: azureml:cpu-cluster
+inputs:
+  sampled_data:
+    type: uri_folder
+    path: azureml:amazon_electronics_features_v1_sampled@latest
+jobs:
+  split:
+    type: command
+    component: azureml:split_dataset@latest
+    inputs:
+      data: ${{parent.inputs.sampled_data}}
+      seed: 42
+      train_ratio: 0.7
+      val_ratio: 0.15
+  normalize_train:
+    type: command
+    component: azureml:normalize_text@latest
+    inputs:
+      data: ${{parent.jobs.split.outputs.train}}
+  normalize_val:
+    type: command
+    component: azureml:normalize_text@latest
+    inputs:
+      data: ${{parent.jobs.split.outputs.val}}
+  normalize_test:
+    type: command
+    component: azureml:normalize_text@latest
+    inputs:
+      data: ${{parent.jobs.split.outputs.test}}
+  length_train:
+    type: command
+    component: azureml:length_features@latest
+    inputs:
+      data: ${{parent.jobs.normalize_train.outputs.out}}
+  sentiment_train:
+    type: command
+    component: azureml:sentiment_features@latest
+    inputs:
+      data: ${{parent.jobs.normalize_train.outputs.out}}
+  tfidf:
+    type: command
+    component: azureml:tfidf_features@latest
+    inputs:
+      train: ${{parent.jobs.normalize_train.outputs.out}}
+      val: ${{parent.jobs.normalize_val.outputs.out}}
+      test: ${{parent.jobs.normalize_test.outputs.out}}
+      max_features: 500
+  sbert_train:
+    type: command
+    component: azureml:sbert_embeddings@latest
+    inputs:
+      data: ${{parent.jobs.normalize_train.outputs.out}}
+      model_name: "all-MiniLM-L6-v2"
+      batch_size: 64
+  merge_all:
+    type: command
+    component: azureml:merge_features@latest
+    inputs:
+      length: ${{parent.jobs.length_train.outputs.out}}
+      sentiment: ${{parent.jobs.sentiment_train.outputs.out}}
+      tfidf: ${{parent.jobs.tfidf.outputs.train_out}}
+      sbert: ${{parent.jobs.sbert_train.outputs.out}}

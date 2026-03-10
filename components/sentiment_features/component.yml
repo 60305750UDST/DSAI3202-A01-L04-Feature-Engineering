@@ -1,0 +1,17 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: sentiment_features
+display_name: VADER Sentiment Features
+version: 3
+type: command
+inputs:
+  data:
+    type: uri_folder
+outputs:
+  out:
+    type: uri_folder
+code: .
+command: >-
+  python sentiment.py
+  --data ${{inputs.data}}
+  --out ${{outputs.out}}
+environment: azureml:sentiment-env@latest

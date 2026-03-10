@@ -1,0 +1,7 @@
+$schema: https://azuremlschemas.azureedge.net/latest/datastore.schema.json
+name: blobkey
+type: azure_blob
+account_name: amazondatalake60305750
+container_name: curated
+credentials:
+  account_key: <YOUR_STORAGE_ACCOUNT_KEY>

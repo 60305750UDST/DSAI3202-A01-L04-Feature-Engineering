@@ -1,0 +1,33 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: tfidf_features
+display_name: TF-IDF Text Features
+version: 1
+type: command
+inputs:
+  train:
+    type: uri_folder
+  val:
+    type: uri_folder
+  test:
+    type: uri_folder
+  max_features:
+    type: integer
+    default: 500
+outputs:
+  train_out:
+    type: uri_folder
+  val_out:
+    type: uri_folder
+  test_out:
+    type: uri_folder
+code: .
+command: >-
+  python tfidf.py
+  --train ${{inputs.train}}
+  --val ${{inputs.val}}
+  --test ${{inputs.test}}
+  --train_out ${{outputs.train_out}}
+  --val_out ${{outputs.val_out}}
+  --test_out ${{outputs.test_out}}
+  --max_features ${{inputs.max_features}}
+environment: azureml:tfidf-env@latest
