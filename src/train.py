@@ -44,8 +44,8 @@ def parse_args():
     parser.add_argument("--val_data", type=str, required=True)
     parser.add_argument("--test_data", type=str, required=True)
     parser.add_argument("--output", type=str, required=True)
-    parser.add_argument("--alpha", type=float, default=0.001)
-    parser.add_argument("--max_iter", type=int, default=1000)
+    parser.add_argument("--alpha", type=float, default=0.000814)
+    parser.add_argument("--max_iter", type=int, default=2000)
     return parser.parse_args()
 
 def main():
